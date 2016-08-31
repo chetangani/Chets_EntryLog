@@ -1,4 +1,4 @@
-package in.entrylog.chetsgani.main;
+package in.entrylog.chetsgani.values;
 
 import android.content.Context;
 import android.graphics.Bitmap;

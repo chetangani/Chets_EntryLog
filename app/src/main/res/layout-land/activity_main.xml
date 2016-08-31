@@ -9,8 +9,8 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="72dp"
         android:layout_marginRight="72dp"
-        android:paddingBottom="24dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="24dp">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="25dp"
             android:fontFamily="serif"
-            android:text="LOGIN"
+            android:text="@string/LOGIN"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textStyle="bold" />
 
@@ -79,12 +79,6 @@
                 android:inputType="textPassword" />
         </android.support.design.widget.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/password_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Show Password" />
-
         <Button
             android:id="@+id/login_btn"
             android:layout_width="match_parent"
@@ -92,39 +86,21 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:text="LOGIN"
-            android:textColor="@android:color/white" />
-
-        <Button
-            android:id="@+id/logout_btn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:text="LOGOUT"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:visibility="gone" />
+            android:layout_marginTop="25dp"
+            android:background="@drawable/buttonpressed"
+            android:text="@string/LOGIN"
+            android:textColor="@color/White"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/version_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="VER: 1.0.1"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="25dp"
             android:gravity="end"
-            android:id="@+id/version_txt"
-            android:layout_gravity="center_horizontal" />
-
-        <ProgressBar
-            android:id="@+id/login_progress"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone" />
+            android:text="VER: 1.0.1" />
 
     </LinearLayout>
 

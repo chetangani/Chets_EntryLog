@@ -53,11 +53,9 @@ public class MainActivity extends AppCompatActivity {
     TextView tv_version;
     String Orgid = "", User = "", Password = "", Login = "", OverNightTime="", OTPAccess, ImageAccess, Printertype,
             Scannertype, RfidStatus, DeviceModel, Cameratype;
-    CheckBox password_box;
     ConnectingTask task;
     DetailsValue details;
     Thread mythread, permissionthread;
-    View mProgressBar;
     static boolean loginsuccess = false;
     SharedPreferences settings;
     SharedPreferences.Editor editor;
@@ -82,10 +80,6 @@ public class MainActivity extends AppCompatActivity {
         user_etTxt = (EditText) findViewById(R.id.userid_etTxt);
         pass_etTxt = (EditText) findViewById(R.id.password_etTxt);
         tv_version = (TextView) findViewById(R.id.version_txt);
-
-        password_box = (CheckBox) findViewById(R.id.password_box);
-
-        mProgressBar = findViewById(R.id.login_progress);
 
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -122,20 +116,6 @@ public class MainActivity extends AppCompatActivity {
             Intent login = new Intent(MainActivity.this, BlocksActivity.class);
             startActivityForResult(login, REQUEST_FOR_ACTIVITY_CODE);
         }
-
-        password_box.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    pass_etTxt.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                    pass_etTxt.setSelection(pass_etTxt.getText().length());
-                }
-                else {
-                    pass_etTxt.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                    pass_etTxt.setSelection(pass_etTxt.getText().length());
-                }
-            }
-        });
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -388,9 +368,6 @@ public class MainActivity extends AppCompatActivity {
             pass_etTxt.setText("");
             pass_etTxt.setEnabled(false);
             orgid_etTxt.requestFocus();
-            if (password_box.isChecked()) {
-                password_box.setChecked(false);
-            }
         } else {
             user_etTxt.setText("");
             user_etTxt.setEnabled(true);
@@ -399,9 +376,6 @@ public class MainActivity extends AppCompatActivity {
             pass_etTxt.setText("");
             pass_etTxt.setEnabled(true);
             orgid_etTxt.requestFocus();
-            if (password_box.isChecked()) {
-                password_box.setChecked(false);
-            }
         }
     }
 
@@ -589,9 +563,6 @@ public class MainActivity extends AppCompatActivity {
                         orgid_etTxt.setText("");
                         pass_etTxt.setText("");
                         orgid_etTxt.requestFocus();
-                        if (password_box.isChecked()) {
-                            password_box.setChecked(false);
-                        }
                     }
                 });
                 AlertDialog existalert = existbuilder.create();
@@ -611,9 +582,6 @@ public class MainActivity extends AppCompatActivity {
                         orgid_etTxt.setText("");
                         pass_etTxt.setText("");
                         orgid_etTxt.requestFocus();
-                        if (password_box.isChecked()) {
-                            password_box.setChecked(false);
-                        }
                     }
                 });
                 AlertDialog blockalert = blockbuilder.create();

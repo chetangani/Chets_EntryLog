@@ -24,28 +24,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.POSD.controllers.PrinterController;
-import com.POSD.util.MachineVersion;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.MultiFormatWriter;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
 
 import in.entrylog.chetsgani.R;
 import in.entrylog.chetsgani.dataposting.ConnectingTask;
 import in.entrylog.chetsgani.dataposting.ConnectingTask.VisitorManualCheckout;
-import in.entrylog.chetsgani.main.CustomVolleyRequest;
+import in.entrylog.chetsgani.values.CustomVolleyRequest;
 import in.entrylog.chetsgani.main.services.FieldsService;
 import in.entrylog.chetsgani.main.services.PrintingService;
 import in.entrylog.chetsgani.util.ImageProcessing;

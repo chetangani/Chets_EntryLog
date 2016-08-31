@@ -49,7 +49,7 @@ import java.util.Set;
 import in.entrylog.chetsgani.R;
 import in.entrylog.chetsgani.dataposting.ConnectingTask;
 import in.entrylog.chetsgani.dataposting.ConnectingTask.VisitorManualCheckout;
-import in.entrylog.chetsgani.main.CustomVolleyRequest;
+import in.entrylog.chetsgani.values.CustomVolleyRequest;
 import in.entrylog.chetsgani.main.services.FieldsService;
 import in.entrylog.chetsgani.main.services.PrintingService;
 import in.entrylog.chetsgani.myprinter.BTPrinting;

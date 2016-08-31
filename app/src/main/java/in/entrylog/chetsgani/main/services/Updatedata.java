@@ -48,7 +48,7 @@ import in.entrylog.chetsgani.values.FunctionCalls;
 public class Updatedata extends Service {
     public static final String PREFS_NAME = "MyPrefsFile";
     /*public static final String Image_Url = "http://www.tellservice.com/entrylog/index.php/admin/api/Upload_images2";*/
-    public static final String Image_Url = "http://www.askdial.com/chetsgani/index.php/admin/api/Upload_images2";
+    public static final String Image_Url = "http://www.askdial.com/entrylog/index.php/admin/api/Upload_images2";
     ConnectingTask task;
     DetailsValue details;
     DataBase dataBase;

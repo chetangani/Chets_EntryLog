@@ -15,7 +15,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import java.util.ArrayList;
 
 import in.entrylog.chetsgani.R;
-import in.entrylog.chetsgani.main.CustomVolleyRequest;
+import in.entrylog.chetsgani.values.CustomVolleyRequest;
 import in.entrylog.chetsgani.main.bluetooth.Visitor_Details_Bluetooth;
 import in.entrylog.chetsgani.main.el101_102.Visitor_Details_EL101;
 import in.entrylog.chetsgani.main.el201.Visitor_Details_EL201;
