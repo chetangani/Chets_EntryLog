@@ -8,36 +8,35 @@
     <!-- Network State Permissions -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- Accessing camera hardware -->
     <uses-feature android:name="android.hardware.camera" />
+
     <uses-permission android:name="android.permission.CAMERA" />
-	
     <uses-permission android:name="android.permission.VIBRATE" />
-	
-	<!-- Accessing nfc hardware -->
+
+    <!-- Accessing nfc hardware -->
     <uses-permission android:name="android.permission.NFC" />
-	
-	<!-- Accessing storage -->
+
+    <!-- Accessing storage -->
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-	
-	<!-- Accessing bluetooth hardware -->
+
+    <!-- Accessing bluetooth hardware -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
-        android:clearTaskOnLaunch="true"
         android:icon="@mipmap/ic_entrylog_icon"
         android:label="@string/app_name"
         android:stateNotNeeded="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="in.entrylog.chetsgani.main.MainActivity"
-            android:excludeFromRecents="true"
-            android:screenOrientation="nosensor"
+            android:name=".main.MainActivity"
             android:theme="@style/MyTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,35 +47,35 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="in.entrylog.chetsgani.main.BlocksActivity"
+            android:name=".main.BlocksActivity"
             android:icon="@mipmap/ic_entrylog_icon" />
         <activity
-            android:name="in.entrylog.chetsgani.main.el101_102.AddVisitors_EL101"
+            android:name=".main.el101_102.AddVisitors_EL101"
             android:icon="@mipmap/ic_entrylog_icon" />
-        <activity android:name="in.entrylog.chetsgani.main.CheckoutVisitors" />
-        <activity android:name="in.entrylog.chetsgani.main.Visitors" />
+        <activity android:name=".main.Visitors" />
 
-        <service android:name="in.entrylog.chetsgani.myprinter.WorkService" />
-        <service android:name="in.entrylog.chetsgani.main.services.Updatedata" />
-        <service android:name="in.entrylog.chetsgani.main.services.FieldsService" />
-        <service android:name="in.entrylog.chetsgani.main.services.StaffService" />
-        <service android:name="in.entrylog.chetsgani.main.services.PrintingService" />
+        <service android:name=".myprinter.WorkService" />
+        <service android:name=".main.services.Updatedata" />
+        <service android:name=".main.services.FieldsService" />
+        <service android:name=".main.services.StaffService" />
+        <service android:name=".main.services.PrintingService" />
+        <service android:name=".main.services.Bluetooth" />
 
-        <activity android:name="in.entrylog.chetsgani.main.el101_102.Visitor_Details_EL101" />
-        <activity android:name="in.entrylog.chetsgani.main.Search_Details" />
+        <activity android:name=".main.el101_102.Visitor_Details_EL101" />
+        <activity android:name=".main.Search_Details" />
 
-        <receiver android:name="in.entrylog.chetsgani.main.AlarmReceiver">
+        <receiver android:name=".main.AlarmReceiver">
             <intent-filter>
                 <action android:name="in.entrylog.chetsgani.main.android.action.broadcast" />
             </intent-filter>
         </receiver>
 
-        <activity android:name="in.entrylog.chetsgani.main.Overnightstay_Visitors" />
-        <activity android:name="in.entrylog.chetsgani.main.el201.AddVisitors_EL201" />
-        <activity android:name="in.entrylog.chetsgani.main.bluetooth.AddVisitor_Bluetooth" />
-        <activity android:name="in.entrylog.chetsgani.main.el201.CheckoutVisitors_EL201" />
-        <activity android:name="in.entrylog.chetsgani.main.bluetooth.Visitor_Details_Bluetooth" />
-        <activity android:name="in.entrylog.chetsgani.main.el201.Visitor_Details_EL201"></activity>
+        <activity android:name=".main.Overnightstay_Visitors" />
+        <activity android:name=".main.el201.AddVisitors_EL201" />
+        <activity android:name=".main.bluetooth.AddVisitor_Bluetooth" />
+        <activity android:name=".main.CheckoutVisitors" />
+        <activity android:name=".main.bluetooth.Visitor_Details_Bluetooth" />
+        <activity android:name=".main.el201.Visitor_Details_EL201" />
     </application>
 
 </manifest>

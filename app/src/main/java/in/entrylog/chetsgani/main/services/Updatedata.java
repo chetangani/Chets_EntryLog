@@ -174,7 +174,6 @@ public class Updatedata extends Service {
     }
 
     class CheckData implements Runnable {
-
         @Override
         public void run() {
             while (!Thread.currentThread().isInterrupted()) {

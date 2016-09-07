@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +40,7 @@ import in.entrylog.chetsgani.dataposting.ConnectingTask.CheckUpdatedApk;
 import in.entrylog.chetsgani.main.bluetooth.AddVisitor_Bluetooth;
 import in.entrylog.chetsgani.main.el101_102.AddVisitors_EL101;
 import in.entrylog.chetsgani.main.el201.AddVisitors_EL201;
-import in.entrylog.chetsgani.main.el201.CheckoutVisitors_EL201;
+import in.entrylog.chetsgani.main.services.Bluetooth;
 import in.entrylog.chetsgani.main.services.FieldsService;
 import in.entrylog.chetsgani.main.services.PrintingService;
 import in.entrylog.chetsgani.main.services.StaffService;
@@ -153,14 +151,9 @@ public class BlocksActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (functionCalls.isInternetOn(BlocksActivity.this)) {
-                    if (settings.getString("Printertype", "").equals("")) {
-                        checkoutbtn = true;
-                        showdialog(DEVICE_DLG);
-                    } else if (settings.getString("Device", "").equals("EL201")) {
-                        checkoutVisitors(CheckoutVisitors_EL201.class);
-                    } else {
-                        checkoutVisitors(CheckoutVisitors.class);
-                    }
+                    checkoutVisitors(CheckoutVisitors.class);
+                    /*Intent service3 = new Intent(BlocksActivity.this, Bluetooth.class);
+                    startService(service3);*/
                 } else {
                     Toast.makeText(BlocksActivity.this, "Please Turn On Internet", Toast.LENGTH_SHORT).show();
                 }
@@ -177,6 +170,8 @@ public class BlocksActivity extends AppCompatActivity {
                     } else {
                         visitors(Visitors.class, "Visitors");
                     }
+                    /*Intent service3 = new Intent(BlocksActivity.this, Bluetooth.class);
+                    stopService(service3);*/
                 } else {
                     Toast.makeText(BlocksActivity.this, "Please Turn On Internet", Toast.LENGTH_SHORT).show();
                 }
@@ -193,6 +188,7 @@ public class BlocksActivity extends AppCompatActivity {
                     } else {
                         visitors(Visitors.class, "Manually Checkout");
                     }
+                    /*addVisitors(AddVisitor_Bluetooth.class);*/
                 } else {
                     Toast.makeText(BlocksActivity.this, "Please Turn On Internet", Toast.LENGTH_SHORT).show();
                 }
@@ -289,7 +285,7 @@ public class BlocksActivity extends AppCompatActivity {
                                 visitors(Visitors.class, "Visitors");
                             } else if (checkoutbtn) {
                                 checkoutbtn = false;
-                                checkoutVisitors(CheckoutVisitors.class);
+                                checkoutVisitors(in.entrylog.chetsgani.main.CheckoutVisitors.class);
                             } else {
                                 Toast.makeText(BlocksActivity.this, "Bluetooth", Toast.LENGTH_SHORT).show();
                             }
@@ -307,7 +303,7 @@ public class BlocksActivity extends AppCompatActivity {
                                 visitors(Visitors.class, "Visitors");
                             } else if (checkoutbtn) {
                                 checkoutbtn = false;
-                                checkoutVisitors(CheckoutVisitors.class);
+                                checkoutVisitors(in.entrylog.chetsgani.main.CheckoutVisitors.class);
                             } else {
                                 Toast.makeText(BlocksActivity.this, "EL101/102", Toast.LENGTH_SHORT).show();
                             }
@@ -325,7 +321,7 @@ public class BlocksActivity extends AppCompatActivity {
                                 visitors(Visitors.class, "Visitors");
                             } else if (checkoutbtn) {
                                 checkoutbtn = false;
-                                checkoutVisitors(CheckoutVisitors_EL201.class);
+                                checkoutVisitors(CheckoutVisitors.class);
                             } else {
                                 Toast.makeText(BlocksActivity.this, "EL201", Toast.LENGTH_SHORT).show();
                             }
@@ -387,10 +383,10 @@ public class BlocksActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
 
-    }
+    }*/
 
     private void addVisitors(Class startclass) {
         Intent intent = new Intent(BlocksActivity.this, startclass);
@@ -403,8 +399,6 @@ public class BlocksActivity extends AppCompatActivity {
 
     private void checkoutVisitors(Class startclass) {
         Intent checkout = new Intent(BlocksActivity.this, startclass);
-        checkout.putExtra("ID", OrganizationID);
-        checkout.putExtra("GuardID", GuardID);
         startActivity(checkout);
     }
 
@@ -451,9 +445,14 @@ public class BlocksActivity extends AppCompatActivity {
                         if (!OverNightTime.equals("")) {
                             functionCalls.cancelReceiver(BlocksActivity.this);
                         }
-                        Intent logoutIntent = new Intent();
-                        setResult(Activity.RESULT_OK, logoutIntent);
+                        MainActivity.loginsuccess = false;
+                        Intent logoutintent = new Intent(BlocksActivity.this, MainActivity.class);
+                        logoutintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(logoutintent);
                         finish();
+                        /*Intent logoutIntent = new Intent();
+                        setResult(Activity.RESULT_OK, logoutIntent);
+                        finish();*/
                     }
                     if (detailsValue.isLoginFailure()) {
                         detailsValue.setLoginFailure(false);

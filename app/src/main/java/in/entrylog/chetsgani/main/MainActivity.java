@@ -14,17 +14,11 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,11 +50,11 @@ public class MainActivity extends AppCompatActivity {
     ConnectingTask task;
     DetailsValue details;
     Thread mythread, permissionthread;
-    static boolean loginsuccess = false;
+    public static boolean loginsuccess = false;
     SharedPreferences settings;
     SharedPreferences.Editor editor;
     static ProgressDialog dialog = null;
-    boolean storage = false, camera = false, phone = false;
+    boolean storage = false, camera = false, phone = false, location = false;
     FunctionCalls functionCalls;
 
     @Override
@@ -114,7 +108,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (loginsuccess) {
             Intent login = new Intent(MainActivity.this, BlocksActivity.class);
-            startActivityForResult(login, REQUEST_FOR_ACTIVITY_CODE);
+            /*startActivityForResult(login, REQUEST_FOR_ACTIVITY_CODE);*/
+            startActivity(login);
+            finish();
         }
 
         btn_login.setOnClickListener(new View.OnClickListener() {
@@ -206,30 +202,20 @@ public class MainActivity extends AppCompatActivity {
                     if (details.isLoginSuccess()) {
                         details.setLoginSuccess(false);
                         String ID = details.getOrganizationID();
-                        functionCalls.LogStatus("ID: "+ID);
                         showtoast("ID: "+ID);
                         String SecurityID = details.getGuardID();
-                        functionCalls.LogStatus("SecurityID: "+SecurityID);
                         String OrganizationName = details.getOrganizationName();
-                        functionCalls.LogStatus("OrganizationName: "+OrganizationName);
                         String Nighttime = details.getOverNightStay_Time();
-                        functionCalls.LogStatus("Nighttime: "+Nighttime);
                         if (!Nighttime.equals("")) {
                             if (!Nighttime.substring(0, 1).equals(":")) {
                                 if (!Nighttime.substring(1, 2).equals(":")) {
                                     if (Nighttime.substring(2, 3).equals(":")) {
                                         OverNightTime = Nighttime.substring(0, 2);
-                                        Log.d("debug", "OverNightTime: " + OverNightTime);
                                     }
                                 } else {
                                     OverNightTime = Nighttime.substring(0, 1);
-                                    Log.d("debug", "OverNightTime: " + OverNightTime);
                                 }
-                            } else {
-                                Log.d("debug", "OverNightTime: Invalid");
                             }
-                        } else {
-                            Log.d("debug", "OverNightTime: Not Available");
                         }
                         String BarCode = details.getVisitors_BarCode();
                         editor.putString("BarCode", functionCalls.setBarCodeStatus(BarCode, ID));
@@ -325,7 +311,9 @@ public class MainActivity extends AppCompatActivity {
                         loginpageview();
                         dialog.dismiss();
                         Intent login = new Intent(MainActivity.this, BlocksActivity.class);
-                        startActivityForResult(login, REQUEST_FOR_ACTIVITY_CODE);
+                        /*startActivityForResult(login, REQUEST_FOR_ACTIVITY_CODE);*/
+                        startActivity(login);
+                        finish();
                     }
                     if (details.isPermissionFailure()) {
                         details.setPermissionFailure(false);
@@ -381,9 +369,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        finish();
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
@@ -391,19 +380,16 @@ public class MainActivity extends AppCompatActivity {
                 loginpageview();
             }
         }
-    }
+    }*/
 
     @TargetApi(23)
     public void checkforPermissionsMandAbove() {
-        Log.d("debug", "checkForPermissions() called");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkForWriteExternalStoragePermissionsMAndAboveBlocking(MainActivity.this);
             permissionthread = null;
             Runnable runnable = new CheckPermissions();
             permissionthread = new Thread(runnable);
             permissionthread.start();
-        } else {
-            Log.d("debug", "Below M, permissions not via code");
         }
     }
 
@@ -448,10 +434,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (phone) {
                         phone = false;
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                checkForLocationPermissionsMAndAboveBlocking(MainActivity.this);
+                            }
+                        }, 1000);//358187072616272
+                    }
+                    if (location) {
+                        location = false;
                         permissionthread.interrupt();
-                        Log.d("debug", "Permission Thread Interrupted");//358187072616272
+                        functionCalls.LogStatus("Permission Thread Interrupted");
                     }
                 } catch(Exception e){
+                    e.printStackTrace();
                 }
             }
         });
@@ -465,11 +461,9 @@ public class MainActivity extends AppCompatActivity {
             act.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},0);
             while (true) {
                 if (act.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED) {
-                    Log.d("debug", "WRITE_EXTERNAL_STORAGE Got permissions, exiting block loop");
                     storage = true;
                     break;
                 }
-                Log.d("debug", "Sleeping, waiting for permissions");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -478,23 +472,19 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             storage = true;
-            Log.d("debug", "WRITE_EXTERNAL_STORAGE permission already granted");
         }
     }
 
     @TargetApi(23)
     public void checkForCameraPermissionsMAndAboveBlocking(Activity act) {
-        Log.d("debug", "checkForPermissions() called");
         // Here, thisActivity is the current activity
         if (act.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             act.requestPermissions(new String[]{Manifest.permission.CAMERA},0);
             while (true) {
                 if (act.checkSelfPermission(Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED) {
-                    Log.d("debug", "CAMERA Got permissions, exiting block loop");
                     camera = true;
                     break;
                 }
-                Log.d("debug", "Sleeping, waiting for permissions");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -503,24 +493,20 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             camera = true;
-            Log.d("debug", "CAMERA permission already granted");
         }
 
     }
 
     @TargetApi(23)
     public void checkForPhoneStatePermissionsMAndAboveBlocking(Activity act) {
-        Log.d("debug", "checkForPermissions() called");
         // Here, thisActivity is the current activity
         if (act.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             act.requestPermissions(new String[]{Manifest.permission.READ_PHONE_STATE},0);
             while (true) {
                 if (act.checkSelfPermission(Manifest.permission.READ_PHONE_STATE)== PackageManager.PERMISSION_GRANTED) {
-                    Log.d("debug", "READ_PHONE_STATE Got permissions, exiting block loop");
                     phone = true;
                     break;
                 }
-                Log.d("debug", "Sleeping, waiting for permissions");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -529,7 +515,31 @@ public class MainActivity extends AppCompatActivity {
             }
         } else {
             phone = true;
-            Log.d("debug", "READ_PHONE_STATE permission already granted");
+        }
+    }
+
+    @TargetApi(23)
+    public void checkForLocationPermissionsMAndAboveBlocking(Activity act) {
+        // Here, thisActivity is the current activity
+        int permissionCheck = act.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissionCheck += act.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+            act.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION},0);
+            while (true) {
+                if ((act.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                        +act.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) == PackageManager.PERMISSION_GRANTED) {
+                    location = true;
+                    break;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } else {
+            location = true;
         }
     }
 
